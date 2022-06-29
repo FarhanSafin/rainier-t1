@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Loading from '../Loading/Loading';
+import ProductRow from '../ProductRow/ProductRow';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -17,6 +18,13 @@ const Home = () => {
         .then(res => res.json())
         .then(data => setInformations(data));
     }, []);
+
+
+    const [selectedProducts, setSelectedProducts] = useState([])
+    const handleClick = (mapped) => {
+        const newProduct = [...selectedProducts, mapped];
+        setSelectedProducts(newProduct);
+    }
 
 
     if(informations.length === 0)
@@ -41,7 +49,11 @@ const Home = () => {
 
         return (
             <div className='container mx-auto flex mt-10'>
+
+            {/* ALL PRODUCT SHOWING SECTION */}
+            
             <div className='grid grid-cols-2 gap-4'>
+
                 {
                     mappedObject.map(mapped => 
                     <div key={mapped.id} className="card w-96 bg-base-200 shadow-xl">
@@ -49,14 +61,43 @@ const Home = () => {
                             <h2 className="card-title">Name: {mapped.name}</h2>
                             <p>Price: {mapped.price}</p>
                             <div className="card-actions justify-end">
-                                <button className="btn btn-primary">Add to Cart</button>
+                                <button onClick={() => handleClick(mapped)} className="btn btn-primary">Add to Cart</button>
                             </div>
                         </div>
                     </div>)
                 }
+
             </div>
+
+           {/*  CART SECTION */}
+
             <div className='mx-20'>
                 <h2>This is Cart</h2>
+                <h2>Product Selected {selectedProducts.length}</h2>
+                <div className="overflow-x-auto">
+                <table className="table w-full">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {
+                            selectedProducts.map((selectedProduct, index)=>
+                            <ProductRow
+                             key={selectedProduct.id}
+                             selectedProduct={selectedProduct}
+                             index={index}
+                            ></ProductRow>)
+                        }
+
+                    </tbody>
+                </table>
+                </div>
             </div>
             </div>
         );
