@@ -33,6 +33,11 @@ const Home = () => {
         setSelectedProducts(selectedProducts.filter(item => item.id !== id));
     }
 
+    let total = 0;
+    for(const product of selectedProducts){
+        total = total + product.price
+    }
+
 
     if(informations.length === 0)
     {
@@ -53,6 +58,7 @@ const Home = () => {
               price
             });
         });
+
 
         return (
             <div className='container mx-auto flex mt-10'>
@@ -105,10 +111,10 @@ const Home = () => {
 
                     </tbody>
                 </table>
-                <div class="divider"></div> 
+                <div className="divider"></div> 
                 <div className='flex'>
                     <h2>Total:</h2>
-                    <h2>0</h2>
+                    <h2>{total}</h2>
                 </div>
                 </div>
             </div>
