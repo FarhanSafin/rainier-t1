@@ -1,26 +1,28 @@
-import React from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
 
 const Home = () => {
+    const [products, setProducts] = useState([]);
+
+    useEffect(()=>{
+        fetch('https://fec-inventory-api.herokuapp.com/product-info')
+        .then(res => res.json())
+        .then(data => setProducts(data));
+    }, []);
+
+    const [informations, setInformations] = useState([]);
+
+    useEffect(()=>{
+        fetch('https://fec-inventory-api.herokuapp.com/inventory-info')
+        .then(res => res.json())
+        .then(data => setInformations(data));
+    }, []);
 
 
-    const {data: products, isLoading} = useQuery('products', async () => await fetch('https://fec-inventory-api.herokuapp.com/product-info', {
-        method: 'GET',
-    }).then(res=>res.json()));
+if(informations.length === 0){
+    return <h2>LOADING</h2>
+}
 
-
-    const {data: informations, isLoadingInf} = useQuery('informations', async () => await fetch('https://fec-inventory-api.herokuapp.com/inventory-info', {
-        method: 'GET',
-    }).then(res=>res.json()));
-
-
-    if(isLoading){
-        return <h2>LOAD</h2>
-    }
-    else if (isLoadingInf){
-        return <h2>LOADING</h2>
-    }
-    else{
+    else{ 
         const mappedObject = [];
         products.forEach(item => {
             const {id, name} = item;
@@ -34,10 +36,10 @@ const Home = () => {
         });
 
         return (
-            <div className='flex'>
+            <div className='container mx-auto flex mt-10'>
             <div className='grid grid-cols-2 gap-4'>
                 {
-                    mappedObject.map(mapped => <div key={mapped.id} className="card w-96 bg-base-100 shadow-xl">
+                    mappedObject.map(mapped => <div key={mapped.id} className="card w-96 bg-base-200 shadow-xl">
   <div className="card-body">
     <h2 className="card-title">Name: {mapped.name}</h2>
     <p>Price: {mapped.price}</p>
@@ -48,11 +50,11 @@ const Home = () => {
 </div>)
                 }
             </div>
-            <div>
+            <div className='mx-20'>
                 <h2>This is Cart</h2>
             </div>
             </div>
         );
     }
-    }
+}
 export default Home;
