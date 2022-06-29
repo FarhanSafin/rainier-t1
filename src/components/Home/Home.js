@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Loading from '../Loading/Loading';
-import ProductRow from '../ProductRow/ProductRow';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -21,9 +20,16 @@ const Home = () => {
 
 
     const [selectedProducts, setSelectedProducts] = useState([])
+
     const handleClick = (mapped) => {
         const newProduct = [...selectedProducts, mapped];
         setSelectedProducts(newProduct);
+        
+    }
+
+    const handleCartClick = (id) => 
+    {
+        setSelectedProducts(selectedProducts.filter(item => item.id !== id));
     }
 
 
@@ -51,7 +57,7 @@ const Home = () => {
             <div className='container mx-auto flex mt-10'>
 
             {/* ALL PRODUCT SHOWING SECTION */}
-            
+
             <div className='grid grid-cols-2 gap-4'>
 
                 {
@@ -88,11 +94,12 @@ const Home = () => {
 
                         {
                             selectedProducts.map((selectedProduct, index)=>
-                            <ProductRow
-                             key={selectedProduct.id}
-                             selectedProduct={selectedProduct}
-                             index={index}
-                            ></ProductRow>)
+                            <tr key={selectedProduct.id}>
+                                <th>{index + 1}</th>
+                                <td>{selectedProduct.name}</td>
+                                <td>{selectedProduct.price}</td>
+                                <td><button onClick={() => handleCartClick(selectedProduct.id)} className="btn btn-xs">X</button></td>
+                            </tr>)
                         }
 
                     </tbody>
