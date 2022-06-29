@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Loading from '../Loading/Loading';
 
 const Home = () => {
+    const mappedObject = [];
+
     const [products, setProducts] = useState([]);
 
     useEffect(()=>{
@@ -24,7 +26,6 @@ const Home = () => {
     const handleClick = (mapped) => {
         const newProduct = [...selectedProducts, mapped];
         setSelectedProducts(newProduct);
-        
     }
 
     const handleCartClick = (id) => 
@@ -40,7 +41,7 @@ const Home = () => {
 
     else
     { 
-        const mappedObject = [];
+
         products.forEach(item => 
         {
             const {id, name} = item;
@@ -104,6 +105,11 @@ const Home = () => {
 
                     </tbody>
                 </table>
+                <div class="divider"></div> 
+                <div className='flex'>
+                    <h2>Total:</h2>
+                    <h2>0</h2>
+                </div>
                 </div>
             </div>
             </div>
