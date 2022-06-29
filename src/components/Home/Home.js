@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Loading from '../Loading/Loading';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -18,13 +19,16 @@ const Home = () => {
     }, []);
 
 
-if(informations.length === 0){
-    return <h2>LOADING</h2>
-}
+    if(informations.length === 0)
+    {
+        return <Loading></Loading>
+    }
 
-    else{ 
+    else
+    { 
         const mappedObject = [];
-        products.forEach(item => {
+        products.forEach(item => 
+        {
             const {id, name} = item;
             const priceObject = informations.filter(x => x.product_id === id);
             const price =  priceObject[0].unit_price;
@@ -39,15 +43,16 @@ if(informations.length === 0){
             <div className='container mx-auto flex mt-10'>
             <div className='grid grid-cols-2 gap-4'>
                 {
-                    mappedObject.map(mapped => <div key={mapped.id} className="card w-96 bg-base-200 shadow-xl">
-  <div className="card-body">
-    <h2 className="card-title">Name: {mapped.name}</h2>
-    <p>Price: {mapped.price}</p>
-    <div className="card-actions justify-end">
-      <button className="btn btn-primary">Add to Cart</button>
-    </div>
-  </div>
-</div>)
+                    mappedObject.map(mapped => 
+                    <div key={mapped.id} className="card w-96 bg-base-200 shadow-xl">
+                        <div className="card-body">
+                            <h2 className="card-title">Name: {mapped.name}</h2>
+                            <p>Price: {mapped.price}</p>
+                            <div className="card-actions justify-end">
+                                <button className="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>)
                 }
             </div>
             <div className='mx-20'>
