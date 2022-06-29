@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import useInformations from '../hooks/useInformations';
+import useProducts from '../hooks/useProducts';
 import Loading from '../Loading/Loading';
 
 const Home = () => {
-    const mappedObject = [];
+    const [products] = useProducts();
 
-    const [products, setProducts] = useState([]);
-
-    useEffect(()=>{
-        fetch('https://fec-inventory-api.herokuapp.com/product-info')
-        .then(res => res.json())
-        .then(data => setProducts(data));
-    }, []);
-
-    const [informations, setInformations] = useState([]);
-
-    useEffect(()=>{
-        fetch('https://fec-inventory-api.herokuapp.com/inventory-info')
-        .then(res => res.json())
-        .then(data => setInformations(data));
-    }, []);
-
+    const [informations] = useInformations();
 
     const [selectedProducts, setSelectedProducts] = useState([])
 
@@ -28,16 +15,16 @@ const Home = () => {
         setSelectedProducts(newProduct);
     }
 
-    const handleCartClick = (id) => 
+    const handleCartDeleteClick = (id) => 
     {
         setSelectedProducts(selectedProducts.filter(item => item.id !== id));
     }
 
     let total = 0;
+
     for(const product of selectedProducts){
         total = total + product.price
     }
-
 
     if(informations.length === 0)
     {
@@ -47,8 +34,10 @@ const Home = () => {
     else
     { 
 
+        let mappedObject = [];
         products.forEach(item => 
         {
+            
             const {id, name} = item;
             const priceObject = informations.filter(x => x.product_id === id);
             const price =  priceObject[0].unit_price;
@@ -105,7 +94,7 @@ const Home = () => {
                                 <th>{index + 1}</th>
                                 <td>{selectedProduct.name}</td>
                                 <td>{selectedProduct.price}</td>
-                                <td><button onClick={() => handleCartClick(selectedProduct.id)} className="btn btn-xs">X</button></td>
+                                <td><button onClick={() => handleCartDeleteClick(selectedProduct.id)} className="btn btn-xs">X</button></td>
                             </tr>)
                         }
 
@@ -114,7 +103,7 @@ const Home = () => {
                 <div className="divider"></div> 
                 <div className='flex'>
                     <h2>Total:</h2>
-                    <h2>{total}</h2>
+                    <h2 className='font-bold mx-2'>{total}</h2>
                 </div>
                 </div>
             </div>
