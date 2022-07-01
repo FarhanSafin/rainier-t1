@@ -4,16 +4,21 @@ import useProducts from '../hooks/useProducts';
 import Loading from '../Loading/Loading';
 
 const Home = () => {
+
+    let mappedObject = [];
     const [products] = useProducts();
 
     const [informations] = useInformations();
 
     const [selectedProducts, setSelectedProducts] = useState([])
 
-    const handleClick = (mapped) => {
-        const newProduct = [...selectedProducts, mapped];
-        setSelectedProducts(newProduct);
+    const handleClick = (mapped) => 
+    {
+            mapped.quantity = mapped.quantity + 1;
+            const newProduct = [...selectedProducts, mapped];
+            setSelectedProducts(newProduct);
     }
+
 
     const handleCartDeleteClick = (id) => 
     {
@@ -33,17 +38,16 @@ const Home = () => {
 
     else
     { 
-
-        let mappedObject = [];
         products.forEach(item => 
         {
-            
+            let quantity = 0;
             const {id, name} = item;
             const priceObject = informations.filter(x => x.product_id === id);
             const price =  priceObject[0].unit_price;
             mappedObject.push({
               id,
               name,
+              quantity,
               price
             });
         });
@@ -83,6 +87,7 @@ const Home = () => {
                             <th></th>
                             <th>Name</th>
                             <th>Price</th>
+                            <th>Quantity</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -90,10 +95,11 @@ const Home = () => {
 
                         {
                             selectedProducts.map((selectedProduct, index)=>
-                            <tr key={selectedProduct.id}>
-                                <th>{index + 1}</th>
+                            <tr key={index}>
+                                <th></th>
                                 <td>{selectedProduct.name}</td>
                                 <td>{selectedProduct.price}</td>
+                                <td>{selectedProduct.quantity}</td>
                                 <td><button onClick={() => handleCartDeleteClick(selectedProduct.id)} className="btn btn-xs">X</button></td>
                             </tr>)
                         }
