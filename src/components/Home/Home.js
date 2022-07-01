@@ -96,7 +96,7 @@ const Home = () => {
                         {
                             selectedProducts.map((selectedProduct, index)=>
                             <tr key={index}>
-                                <th></th>
+                                <th>{index + 1}</th>
                                 <td>{selectedProduct.name}</td>
                                 <td>{selectedProduct.price}</td>
                                 <td>{selectedProduct.quantity}</td>
