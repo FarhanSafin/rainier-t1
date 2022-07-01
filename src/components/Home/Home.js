@@ -14,9 +14,18 @@ const Home = () => {
 
     const handleClick = (mapped) => 
     {
-            mapped.quantity = mapped.quantity + 1;
-            const newProduct = [...selectedProducts, mapped];
-            setSelectedProducts(newProduct);
+        const id = mapped.id;
+        for (const x of selectedProducts) 
+        { 
+            let got = x.id;
+            if(got.includes(id)){
+                return alert("Already added to cart");
+            }
+        }
+
+        mapped.quantity = mapped.quantity + 1;
+        const newProduct = [...selectedProducts, mapped];
+        setSelectedProducts(newProduct);
     }
 
 
